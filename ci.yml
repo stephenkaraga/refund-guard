@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Install
+        run: |
+          uv venv --python 3.12
+          uv pip install -e ".[dev]"
+      - name: Lint
+        run: |
+          .venv/bin/ruff check src tests evals deploy
+          .venv/bin/ruff format --check src tests evals deploy
+      - name: Fetch tau2 data
+        run: git clone --depth 1 --branch v1.0.1 https://github.com/sierra-research/tau2-bench.git .tau2-bench
+      - name: Offline tests (no API keys)
+        env:
+          TAU2_DATA_DIR: ${{ github.workspace }}/.tau2-bench/data
+        run: .venv/bin/python -m pytest -q

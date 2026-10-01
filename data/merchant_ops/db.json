@@ -1,0 +1,175 @@
+{
+  "today": "2026-10-01",
+  "merchants": {
+    "m_1001": {
+      "merchant_id": "m_1001",
+      "business_name": "Sunrise Bakery LLC",
+      "owner_name": "Ana Lopez",
+      "email": "ana@sunrisebakery.com",
+      "plan": "starter",
+      "risk_score": 22
+    },
+    "m_1002": {
+      "merchant_id": "m_1002",
+      "business_name": "Peak Outfitters Inc",
+      "owner_name": "Marcus Reed",
+      "email": "marcus@peakoutfitters.com",
+      "plan": "growth",
+      "risk_score": 67
+    },
+    "m_1003": {
+      "merchant_id": "m_1003",
+      "business_name": "Lumen Studio",
+      "owner_name": "Priya Shah",
+      "email": "priya@lumenstudio.co",
+      "plan": "enterprise",
+      "risk_score": 15
+    }
+  },
+  "transactions": {
+    "tx_5001": {
+      "transaction_id": "tx_5001",
+      "merchant_id": "m_1001",
+      "amount": 42.5,
+      "status": "settled",
+      "card_last4": "4242",
+      "created_date": "2026-09-28",
+      "refunds": [],
+      "dispute_id": null
+    },
+    "tx_5002": {
+      "transaction_id": "tx_5002",
+      "merchant_id": "m_1001",
+      "amount": 42.5,
+      "status": "settled",
+      "card_last4": "4242",
+      "created_date": "2026-09-28",
+      "refunds": [],
+      "dispute_id": null
+    },
+    "tx_5003": {
+      "transaction_id": "tx_5003",
+      "merchant_id": "m_1001",
+      "amount": 120.0,
+      "status": "partially_refunded",
+      "card_last4": "1881",
+      "created_date": "2026-09-10",
+      "refunds": [
+        {"refund_id": "rf_tx_5003_1", "amount": 20.0, "reason": "product_issue"}
+      ],
+      "dispute_id": null
+    },
+    "tx_5004": {
+      "transaction_id": "tx_5004",
+      "merchant_id": "m_1002",
+      "amount": 750.0,
+      "status": "settled",
+      "card_last4": "3005",
+      "created_date": "2026-09-20",
+      "refunds": [],
+      "dispute_id": null
+    },
+    "tx_5005": {
+      "transaction_id": "tx_5005",
+      "merchant_id": "m_1002",
+      "amount": 89.99,
+      "status": "settled",
+      "card_last4": "7777",
+      "created_date": "2026-09-15",
+      "refunds": [],
+      "dispute_id": "dp_7001"
+    },
+    "tx_5006": {
+      "transaction_id": "tx_5006",
+      "merchant_id": "m_1002",
+      "amount": 64.0,
+      "status": "settled",
+      "card_last4": "1212",
+      "created_date": "2026-03-01",
+      "refunds": [],
+      "dispute_id": null
+    },
+    "tx_5007": {
+      "transaction_id": "tx_5007",
+      "merchant_id": "m_1003",
+      "amount": 300.0,
+      "status": "settled",
+      "card_last4": "9090",
+      "created_date": "2026-09-25",
+      "refunds": [],
+      "dispute_id": null
+    },
+    "tx_5008": {
+      "transaction_id": "tx_5008",
+      "merchant_id": "m_1003",
+      "amount": 210.0,
+      "status": "settled",
+      "card_last4": "4545",
+      "created_date": "2026-09-01",
+      "refunds": [],
+      "dispute_id": "dp_7002"
+    },
+    "tx_5009": {
+      "transaction_id": "tx_5009",
+      "merchant_id": "m_1003",
+      "amount": 55.0,
+      "status": "pending",
+      "card_last4": "4545",
+      "created_date": "2026-09-30",
+      "refunds": [],
+      "dispute_id": null
+    }
+  },
+  "disputes": {
+    "dp_7001": {
+      "dispute_id": "dp_7001",
+      "transaction_id": "tx_5005",
+      "reason": "fraudulent",
+      "status": "open",
+      "evidence_due_date": "2026-10-10",
+      "evidence_type": null
+    },
+    "dp_7002": {
+      "dispute_id": "dp_7002",
+      "transaction_id": "tx_5008",
+      "reason": "product_not_received",
+      "status": "open",
+      "evidence_due_date": "2026-09-28",
+      "evidence_type": null
+    }
+  },
+  "payouts": {
+    "po_9001": {
+      "payout_id": "po_9001",
+      "merchant_id": "m_1001",
+      "amount": 1250.4,
+      "status": "paid",
+      "scheduled_date": "2026-09-25",
+      "hold_reason": null
+    },
+    "po_9002": {
+      "payout_id": "po_9002",
+      "merchant_id": "m_1002",
+      "amount": 4310.0,
+      "status": "on_hold",
+      "scheduled_date": "2026-09-30",
+      "hold_reason": "Elevated chargeback activity; account under routine review"
+    },
+    "po_9003": {
+      "payout_id": "po_9003",
+      "merchant_id": "m_1003",
+      "amount": 8800.0,
+      "status": "scheduled",
+      "scheduled_date": "2026-10-03",
+      "hold_reason": null
+    },
+    "po_9004": {
+      "payout_id": "po_9004",
+      "merchant_id": "m_1001",
+      "amount": 980.1,
+      "status": "scheduled",
+      "scheduled_date": "2026-10-02",
+      "hold_reason": null
+    }
+  }
+}

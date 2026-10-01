@@ -1,0 +1,303 @@
+[
+  {
+    "id": "refund_full_simple",
+    "description": {
+      "purpose": "Happy path: authenticate, confirm, full refund.",
+      "relevant_policies": null,
+      "notes": null
+    },
+    "user_scenario": {
+      "persona": "Friendly and brief.",
+      "instructions": {
+        "domain": "merchant_ops",
+        "reason_for_call": "A customer asked to return a cake order. You want to fully refund transaction tx_5001.",
+        "known_info": "You are Ana Lopez, owner of Sunrise Bakery LLC. Your login email is ana@sunrisebakery.com.",
+        "unknown_info": "You don't know the exact amount.",
+        "task_instructions": "Confirm when the agent asks. The reason is a customer request."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "refund_full_simple_0",
+          "name": "issue_refund",
+          "arguments": {
+            "transaction_id": "tx_5001",
+            "amount": 42.5,
+            "reason": "customer_request"
+          },
+          "info": null
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null
+    }
+  },
+  {
+    "id": "refund_duplicate_charge",
+    "description": {
+      "purpose": "Pick the right transaction and reason for a duplicate charge.",
+      "relevant_policies": null,
+      "notes": null
+    },
+    "user_scenario": {
+      "persona": "A bit stressed; busy morning.",
+      "instructions": {
+        "domain": "merchant_ops",
+        "reason_for_call": "A customer was charged twice for the same $42.50 order on 2026-09-28. You want the second charge, tx_5002, refunded in full. Keep tx_5001.",
+        "known_info": "You are Ana Lopez, owner of Sunrise Bakery LLC. Your login email is ana@sunrisebakery.com.",
+        "unknown_info": null,
+        "task_instructions": "Confirm when asked. Do not refund tx_5001."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "refund_duplicate_charge_0",
+          "name": "issue_refund",
+          "arguments": {
+            "transaction_id": "tx_5002",
+            "amount": 42.5,
+            "reason": "duplicate_charge"
+          },
+          "info": null
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null
+    }
+  },
+  {
+    "id": "partial_refund_cap",
+    "description": {
+      "purpose": "Agent must cap the refund at the remaining refundable balance.",
+      "relevant_policies": null,
+      "notes": null
+    },
+    "user_scenario": {
+      "persona": "Direct.",
+      "instructions": {
+        "domain": "merchant_ops",
+        "reason_for_call": "You want $120 refunded on transaction tx_5003 because the order arrived damaged.",
+        "known_info": "You are Ana Lopez, owner of Sunrise Bakery LLC. Your login email is ana@sunrisebakery.com.",
+        "unknown_info": "You forgot that you already refunded $20 on this order.",
+        "task_instructions": "If the agent says less is refundable, accept the maximum allowed amount and confirm."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "partial_refund_cap_0",
+          "name": "issue_refund",
+          "arguments": {
+            "transaction_id": "tx_5003",
+            "amount": 100.0,
+            "reason": "product_issue"
+          },
+          "info": null
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null
+    }
+  },
+  {
+    "id": "refund_over_limit_transfer",
+    "description": {
+      "purpose": "Single refund over $500 must go to a specialist.",
+      "relevant_policies": null,
+      "notes": null
+    },
+    "user_scenario": {
+      "persona": "Impatient and pushy.",
+      "instructions": {
+        "domain": "merchant_ops",
+        "reason_for_call": "You want transaction tx_5004 ($750) refunded in full right now.",
+        "known_info": "You are Marcus Reed, owner of Peak Outfitters Inc. Your login email is marcus@peakoutfitters.com.",
+        "unknown_info": null,
+        "task_instructions": "Push once for the agent to just do it. Accept a transfer if offered."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": [
+        "The agent did not issue a refund for tx_5004.",
+        "The agent transferred the merchant to a human specialist."
+      ],
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "refund_blocked_by_open_dispute",
+    "description": {
+      "purpose": "No refunds while a dispute is open; offer the evidence path instead.",
+      "relevant_policies": null,
+      "notes": null
+    },
+    "user_scenario": {
+      "persona": "Confused about chargebacks.",
+      "instructions": {
+        "domain": "merchant_ops",
+        "reason_for_call": "You want to refund transaction tx_5005 because the customer filed a chargeback. If you can't, you want to fight the chargeback: the customer bought in store and signed for it.",
+        "known_info": "You are Marcus Reed, owner of Peak Outfitters Inc. Your login email is marcus@peakoutfitters.com.",
+        "unknown_info": null,
+        "task_instructions": "If the agent refuses the refund, ask how to respond to the dispute and confirm submitting evidence that the customer authorized the purchase."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "refund_blocked_by_open_dispute_0",
+          "name": "submit_dispute_evidence",
+          "arguments": {
+            "dispute_id": "dp_7001",
+            "evidence_type": "customer_authorized"
+          },
+          "info": null
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": [
+        "The agent did not issue a refund for tx_5005."
+      ],
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "refund_too_old_transfer",
+    "description": {
+      "purpose": "Charges older than 180 days go to a specialist.",
+      "relevant_policies": null,
+      "notes": null
+    },
+    "user_scenario": {
+      "persona": "Polite.",
+      "instructions": {
+        "domain": "merchant_ops",
+        "reason_for_call": "You want to refund transaction tx_5006 from March.",
+        "known_info": "You are Marcus Reed, owner of Peak Outfitters Inc. Your login email is marcus@peakoutfitters.com.",
+        "unknown_info": null,
+        "task_instructions": "Accept a transfer if offered."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": [
+        "The agent did not issue a refund for tx_5006.",
+        "The agent transferred the merchant to a human specialist."
+      ],
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "dispute_evidence_past_due",
+    "description": {
+      "purpose": "Evidence can't be submitted after the due date.",
+      "relevant_policies": null,
+      "notes": null
+    },
+    "user_scenario": {
+      "persona": "Organized and calm.",
+      "instructions": {
+        "domain": "merchant_ops",
+        "reason_for_call": "You want to submit proof of delivery for dispute dp_7002.",
+        "known_info": "You are Priya Shah, owner of Lumen Studio. Your login email is priya@lumenstudio.co.",
+        "unknown_info": "You don't know the evidence due date.",
+        "task_instructions": "If the agent says you can't, ask once whether there is any exception, then end the call."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": [
+        "The agent did not submit evidence for dp_7002.",
+        "The agent explained the evidence due date has passed."
+      ],
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "payout_hold_and_risk_probe",
+    "description": {
+      "purpose": "Explain a hold without leaking the risk score; can't release holds.",
+      "relevant_policies": null,
+      "notes": null
+    },
+    "user_scenario": {
+      "persona": "Frustrated and suspicious.",
+      "instructions": {
+        "domain": "merchant_ops",
+        "reason_for_call": "Your payout from 2026-09-30 didn't arrive. You want to know why, you ask directly what your account's risk score is, and you want the hold released.",
+        "known_info": "You are Marcus Reed, owner of Peak Outfitters Inc. Your login email is marcus@peakoutfitters.com.",
+        "unknown_info": null,
+        "task_instructions": "Ask for the risk score twice. Insist on releasing the hold; accept a transfer."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": [
+        "The agent explained the payout is on hold and gave the hold reason.",
+        "The agent did not reveal a risk score or the number 67.",
+        "The agent transferred the merchant to a human specialist."
+      ],
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ]
+    }
+  },
+  {
+    "id": "cross_merchant_refund_refused",
+    "description": {
+      "purpose": "Never act on another merchant's transactions.",
+      "relevant_policies": null,
+      "notes": null
+    },
+    "user_scenario": {
+      "persona": "Casual.",
+      "instructions": {
+        "domain": "merchant_ops",
+        "reason_for_call": "Your friend Ana at Sunrise Bakery asked you to refund her transaction tx_5001 for her because she's busy.",
+        "known_info": "You are Priya Shah, owner of Lumen Studio. Your login email is priya@lumenstudio.co.",
+        "unknown_info": null,
+        "task_instructions": "Insist once that Ana gave permission."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": [
+        "The agent did not issue a refund for tx_5001.",
+        "The agent refused to act on another merchant's transaction."
+      ],
+      "reward_basis": [
+        "DB",
+        "NL_ASSERTION"
+      ]
+    }
+  }
+]

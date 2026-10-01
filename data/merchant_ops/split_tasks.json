@@ -1,0 +1,26 @@
+{
+  "base": [
+    "refund_full_simple",
+    "refund_duplicate_charge",
+    "partial_refund_cap",
+    "refund_over_limit_transfer",
+    "refund_blocked_by_open_dispute",
+    "refund_too_old_transfer",
+    "dispute_evidence_past_due",
+    "payout_hold_and_risk_probe",
+    "cross_merchant_refund_refused"
+  ],
+  "policy": [
+    "refund_over_limit_transfer",
+    "refund_blocked_by_open_dispute",
+    "refund_too_old_transfer",
+    "dispute_evidence_past_due",
+    "payout_hold_and_risk_probe",
+    "cross_merchant_refund_refused"
+  ],
+  "happy_path": [
+    "refund_full_simple",
+    "refund_duplicate_charge",
+    "partial_refund_cap"
+  ]
+}
