@@ -36,6 +36,9 @@ def run(
     agent: str = typer.Option("guarded", help="baseline or guarded"),
     llm: str = typer.Option("anthropic/claude-sonnet-5-5", help="Agent model (LiteLLM id)"),
     user_llm: str = typer.Option("anthropic/claude-sonnet-5-5", help="User-simulator model"),
+    judge_llm: str | None = typer.Option(
+        None, help="Model that grades NL assertions (policy tasks). Defaults to --user-llm."
+    ),
     split: str = typer.Option("base", help="Task split"),
     trials: int = typer.Option(4, help="Trials per task; pass^k uses k <= trials"),
     task_id: list[str] | None = typer.Option(None, help="Run only these task IDs"),
@@ -47,13 +50,14 @@ def run(
     from tau2.metrics.agent_metrics import compute_metrics
     from tau2.runner import run_domain
 
-    from merchant_ops.register import register
+    from merchant_ops.register import register, set_judge_llm
 
     if agent not in AGENTS:
         raise typer.BadParameter(f"agent must be one of {list(AGENTS)}")
     from tau2.utils.utils import DATA_DIR
 
     register()
+    set_judge_llm(judge_llm or user_llm)
     RESULTS_DIR.mkdir(exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     run_name = f"merchant_ops_{stamp}_{agent}_{llm.replace('/', '_').replace(':', '_')}"

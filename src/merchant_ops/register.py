@@ -14,6 +14,17 @@ BASELINE_AGENT = "mo_baseline"
 GUARDED_AGENT = "mo_guarded"
 
 
+def set_judge_llm(model: str) -> None:
+    """Choose the model that grades NL assertions.
+
+    tau2 v1.0.1 hardcodes the judge to an OpenAI model in tau2.config and
+    exposes no setting for it, so we override the evaluator module's constant.
+    """
+    import tau2.evaluator.evaluator_nl_assertions as nl_eval
+
+    nl_eval.DEFAULT_LLM_NL_ASSERTIONS = model
+
+
 def register() -> None:
     """Idempotently register the domain, its tasks and both agents."""
     if DOMAIN_NAME not in registry.get_domains():

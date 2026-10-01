@@ -17,3 +17,12 @@ def test_agent_builds_from_factory():
     agent = factory(env.get_tools(), env.get_policy(), llm="fake/model")
     state = agent.get_init_state()
     assert "Merchant Support Agent Policy" in state.system_messages[0].content
+
+
+def test_set_judge_llm_overrides_tau2_default():
+    import tau2.evaluator.evaluator_nl_assertions as nl_eval
+
+    from merchant_ops.register import set_judge_llm
+
+    set_judge_llm("ollama_chat/qwen2.5:14b")
+    assert nl_eval.DEFAULT_LLM_NL_ASSERTIONS == "ollama_chat/qwen2.5:14b"
