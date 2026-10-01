@@ -34,8 +34,8 @@ def tasks(split: str | None = typer.Option(None, help="Only show this split")) -
 @app.command()
 def run(
     agent: str = typer.Option("guarded", help="baseline or guarded"),
-    llm: str = typer.Option("anthropic/claude-sonnet-4-5", help="Agent model (LiteLLM id)"),
-    user_llm: str = typer.Option("anthropic/claude-sonnet-4-5", help="User-simulator model"),
+    llm: str = typer.Option("anthropic/claude-sonnet-5-5", help="Agent model (LiteLLM id)"),
+    user_llm: str = typer.Option("anthropic/claude-sonnet-5-5", help="User-simulator model"),
     split: str = typer.Option("base", help="Task split"),
     trials: int = typer.Option(4, help="Trials per task; pass^k uses k <= trials"),
     task_id: list[str] | None = typer.Option(None, help="Run only these task IDs"),
